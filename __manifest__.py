@@ -4,7 +4,6 @@
     'category': 'Healthcare',
     'description': """
         Hospital Management System
-        ==========================
         Manage patients, doctors, departments,
         appointments, prescriptions and medical history.
     """,
