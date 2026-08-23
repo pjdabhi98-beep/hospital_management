@@ -7,10 +7,13 @@ class HospitalPrescription(models.Model):
     _description = 'Hospital Prescription'
     _order = 'date desc'
 
+   
     name = fields.Char(
-        string='Prescription Reference',
-        required=True
-    )
+    string='Prescription Reference',
+    default='New',
+    readonly=True,
+    copy=False
+)
 
     date = fields.Date(
         string='Date',
@@ -43,6 +46,16 @@ class HospitalPrescription(models.Model):
         default='draft',
         required=True
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', 'New') == 'New':
+                vals['name'] = self.env['ir.sequence'].next_by_code(
+                    'hospital.prescription'
+                )       or 'New'
+
+        return super().create(vals_list)
 
     @api.constrains('name')
     def _check_prescription_name(self):

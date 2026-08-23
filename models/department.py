@@ -37,6 +37,10 @@ class HospitalDepartment(models.Model):
         required=True
     )
 
+    # -----------------------------
+    # Validation
+    # -----------------------------
+
     @api.constrains('name')
     def _check_department_name(self):
         for record in self:
@@ -62,6 +66,10 @@ class HospitalDepartment(models.Model):
                 raise ValidationError(
                     'Department code must be unique.'
                 )
+
+    # -----------------------------
+    # Workflow
+    # -----------------------------
 
     def action_activate(self):
         for record in self:

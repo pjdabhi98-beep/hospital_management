@@ -42,6 +42,10 @@ class HospitalMedicalHistory(models.Model):
         required=True
     )
 
+    # -----------------------------
+    # Validation
+    # -----------------------------
+
     @api.constrains('date')
     def _check_history_date(self):
         for record in self:
@@ -49,6 +53,10 @@ class HospitalMedicalHistory(models.Model):
                 raise ValidationError(
                     'Medical history date cannot be in the future.'
                 )
+
+    # -----------------------------
+    # Workflow
+    # -----------------------------
 
     def action_confirm(self):
         for record in self:
