@@ -23,6 +23,7 @@ class HospitalDepartment(models.Model):
     active = fields.Boolean(
         string='Active',
         default=True
+<<<<<<< HEAD
     )
 
     doctor_ids = fields.One2many(
@@ -39,3 +40,6 @@ class HospitalDepartment(models.Model):
     def _compute_doctor_count(self):
         for department in self:
             department.doctor_count = len(department.doctor_ids)
+=======
+    )
+>>>>>>> bd52074 (chore: daprtment model updated)
