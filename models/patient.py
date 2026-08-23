@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+import re
 
 
 class HospitalPatient(models.Model):
@@ -111,6 +113,44 @@ class HospitalPatient(models.Model):
 
             else:
                 record.age = 0
+
+    @api.constrains('date_of_birth')
+    def _check_date_of_birth(self):
+        today = fields.Date.today()
+
+        for record in self:
+            if record.date_of_birth and record.date_of_birth > today:
+                raise ValidationError(
+                'Date of birth cannot be in the future.'
+            )
+
+    @api.constrains('phone')
+    def _check_phone(self):
+        for record in self:
+
+            if record.phone:
+
+                phone = record.phone.strip()
+
+                if not re.match(r'^[0-9+\-\s()]+$', phone):
+                    raise ValidationError(
+                    'Please enter a valid phone number.'
+                )
+
+    @api.constrains('email')
+    def _check_email(self):
+        for record in self:
+
+            if record.email:
+
+                email = record.email.strip()
+
+                pattern = r'^[^@\s]+@[^@\s]+\.[^@\s]+$'
+
+                if not re.match(pattern, email):
+                    raise ValidationError(
+                    'Please enter a valid email address.'
+                )
 
     # =========================================================
     # Smart Button → Appointments
