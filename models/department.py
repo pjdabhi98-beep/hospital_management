@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class HospitalDepartment(models.Model):
@@ -35,6 +36,32 @@ class HospitalDepartment(models.Model):
         default='draft',
         required=True
     )
+
+    @api.constrains('name')
+    def _check_department_name(self):
+        for record in self:
+            existing = self.search([
+                ('name', '=', record.name),
+                ('id', '!=', record.id)
+            ], limit=1)
+
+            if existing:
+                raise ValidationError(
+                    'Department name must be unique.'
+                )
+
+    @api.constrains('code')
+    def _check_department_code(self):
+        for record in self:
+            existing = self.search([
+                ('code', '=', record.code),
+                ('id', '!=', record.id)
+            ], limit=1)
+
+            if existing:
+                raise ValidationError(
+                    'Department code must be unique.'
+                )
 
     def action_activate(self):
         for record in self:

@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class HospitalPrescription(models.Model):
@@ -27,7 +28,8 @@ class HospitalPrescription(models.Model):
     )
 
     duration = fields.Integer(
-        string='Duration (Days)'
+        string='Duration (Days)',
+        required=True
     )
 
     state = fields.Selection(
@@ -41,6 +43,35 @@ class HospitalPrescription(models.Model):
         default='draft',
         required=True
     )
+
+    @api.constrains('name')
+    def _check_prescription_name(self):
+        for record in self:
+            existing = self.search([
+                ('name', '=', record.name),
+                ('id', '!=', record.id)
+            ], limit=1)
+
+            if existing:
+                raise ValidationError(
+                    'Prescription reference must be unique.'
+                )
+
+    @api.constrains('duration')
+    def _check_duration(self):
+        for record in self:
+            if record.duration <= 0:
+                raise ValidationError(
+                    'Duration must be greater than 0 days.'
+                )
+
+    @api.constrains('date')
+    def _check_prescription_date(self):
+        for record in self:
+            if record.date and record.date < fields.Date.today():
+                raise ValidationError(
+                    'Prescription date cannot be in the past.'
+                )
 
     def action_confirm(self):
         for record in self:
