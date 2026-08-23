@@ -57,3 +57,9 @@ class HospitalPatient(models.Model):
         string='Active',
         default=True
     )
+
+    appointment_ids = fields.One2many(
+        'hospital.appointment',
+        'patient_id',
+        string='Appointments'
+    )

@@ -98,8 +98,40 @@
                         </group>
 
                     </group>
+                    <notebook>
+
+    <page string="Appointments">
+
+        <field name="appointment_ids">
+
+            <list>
+
+                <field name="doctor_id"
+                       string="Doctor"
+                       width="180"/>
+
+                <field name="appointment_date"
+                       string="Appointment Date"
+                       width="180"/>
+
+                <field name="reason"
+                       string="Reason"
+                       width="250"/>
+
+                <field name="status"
+                       string="Status"
+                       width="120"/>
+
+            </list>
+
+        </field>
+
+    </page>
+
+</notebook>
 
                 </sheet>
+                
 
             </form>
 
