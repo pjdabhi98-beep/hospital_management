@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <!-- Medical History List View -->
+    <record id="view_hospital_medical_history_list" model="ir.ui.view">
+        <field name="name">hospital.medical.history.list</field>
+        <field name="model">hospital.medical.history</field>
+
+        <field name="arch" type="xml">
+            <list>
+                <field name="date" width="130px"/>
+                <field name="diagnosis" width="220px"/>
+                <field name="treatment" width="300px"/>
+            </list>
+        </field>
+    </record>
+
+
+    <!-- Medical History Form View -->
+    <record id="view_hospital_medical_history_form" model="ir.ui.view">
+        <field name="name">hospital.medical.history.form</field>
+        <field name="model">hospital.medical.history</field>
+
+        <field name="arch" type="xml">
+
+            <form>
+
+                <sheet>
+
+                    <group>
+
+                        <group>
+                            <field name="date"/>
+                            <field name="diagnosis"/>
+                        </group>
+
+                    </group>
+
+                    <notebook>
+
+                        <page string="Medical Details">
+
+                            <group>
+                                <field name="symptoms"/>
+                                <field name="treatment"/>
+                                <field name="notes"/>
+                            </group>
+
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+            </form>
+
+        </field>
+    </record>
+
+
+    <!-- Medical History Search View -->
+    <record id="view_hospital_medical_history_search" model="ir.ui.view">
+        <field name="name">hospital.medical.history.search</field>
+        <field name="model">hospital.medical.history</field>
+
+        <field name="arch" type="xml">
+
+            <search>
+
+                <field name="diagnosis"/>
+                <field name="date"/>
+                <field name="treatment"/>
+
+                <!-- Filters -->
+                <filter
+                    name="filter_today"
+                    string="Today"
+                    domain="[('date', '=', context_today())]"/>
+
+                <filter
+                    name="filter_this_year"
+                    string="This Year"
+                    domain="[
+                        ('date', '&gt;=', context_today().strftime('%Y-01-01')),
+                        ('date', '&lt;=', context_today().strftime('%Y-12-31'))
+                    ]"/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+
+                    <filter
+                        name="group_by_date"
+                        string="Date"
+                        context="{'group_by': 'date'}"/>
+
+                    <filter
+                        name="group_by_diagnosis"
+                        string="Diagnosis"
+                        context="{'group_by': 'diagnosis'}"/>
+
+                </group>
+
+            </search>
+
+        </field>
+    </record>
+
+
+    <!-- Medical History Action -->
+    <record id="action_hospital_medical_history" model="ir.actions.act_window">
+
+        <field name="name">Medical History</field>
+        <field name="res_model">hospital.medical.history</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+
+    <!-- Medical History Menu -->
+    <menuitem
+        id="menu_hospital_medical_history"
+        name="Medical History"
+        parent="menu_hospital_management"
+        action="action_hospital_medical_history"
+        sequence="30"/>
+
+</odoo>
