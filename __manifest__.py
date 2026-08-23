@@ -11,6 +11,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/department_views.xml',
+        'views/prescription_views.xml',
     ],
     'installable': True,
     'application': True,
