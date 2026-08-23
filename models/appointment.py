@@ -46,3 +46,23 @@ class HospitalAppointment(models.Model):
         string='Active',
         default=True
     )
+
+    def action_confirm(self):
+        """Confirm the appointment."""
+        for record in self:
+            record.status = 'confirmed'
+
+    def action_complete(self):
+        """Mark the appointment as completed."""
+        for record in self:
+            record.status = 'completed'
+
+    def action_cancel(self):
+        """Cancel the appointment."""
+        for record in self:
+            record.status = 'cancelled'
+
+    def action_reset_to_scheduled(self):
+        """Reset the appointment to scheduled."""
+        for record in self:
+            record.status = 'scheduled'

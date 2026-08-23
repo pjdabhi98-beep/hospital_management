@@ -58,48 +58,93 @@
 
             <form string="Appointment">
 
-                <sheet>
+    <header>
 
-                    <!-- Appointment Information -->
+        <!-- Confirm -->
+        <button
+            name="action_confirm"
+            string="Confirm"
+            type="object"
+            class="btn-primary"
+            invisible="status != 'scheduled'"
+        />
 
-                    <group string="Appointment Information">
+        <!-- Complete -->
+        <button
+            name="action_complete"
+            string="Complete"
+            type="object"
+            class="btn-primary"
+            invisible="status != 'confirmed'"
+        />
 
-                        <group>
+        <!-- Cancel -->
+        <button
+            name="action_cancel"
+            string="Cancel"
+            type="object"
+            class="btn-secondary"
+            invisible="status == 'completed' or status == 'cancelled'"
+        />
 
-                            <field name="patient_id"/>
+        <!-- Reset -->
+        <button
+            name="action_reset_to_scheduled"
+            string="Reset to Scheduled"
+            type="object"
+            class="btn-secondary"
+            invisible="status != 'cancelled'"
+        />
 
-                            <field name="doctor_id"/>
+        <!-- Statusbar -->
+        <field
+            name="status"
+            widget="statusbar"
+            statusbar_visible="scheduled,confirmed,completed,cancelled"
+        />
 
-                            <field name="appointment_date"/>
+    </header>
 
-                        </group>
+    <sheet>
 
-                        <group>
+        <group string="Appointment Information">
 
-                            <field name="status"/>
+            <group>
 
-                            <field name="active"/>
+                <field name="patient_id"/>
 
-                        </group>
+                <field name="doctor_id"/>
 
-                    </group>
+                <field name="appointment_date"/>
+
+            </group>
+
+            <group>
+
+                <field name="active"/>
+
+            </group>
+
+        </group>
 
 
-                    <!-- Reason -->
+        <group string="Visit Details">
 
-                    <group string="Visit Details">
+            <field
+                name="reason"
+                placeholder="Enter reason for visit..."
+            />
 
-                        <field name="reason"
-                               placeholder="Enter reason for visit..."/>
+            <field
+                name="notes"
+                placeholder="Enter additional notes..."
+            />
 
-                        <field name="notes"
-                               placeholder="Enter additional notes..."/>
+        </group>
 
-                    </group>
+    </sheet>
 
-                </sheet>
-
-            </form>
+</form>
 
         </field>
     </record>
