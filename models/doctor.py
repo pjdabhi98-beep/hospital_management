@@ -58,3 +58,16 @@ class HospitalDoctor(models.Model):
         'doctor_id',
         string='Appointments'
     )
+    def action_view_appointments(self):
+        self.ensure_one()
+
+        return {
+        'type': 'ir.actions.act_window',
+        'name': 'Appointments',
+        'res_model': 'hospital.appointment',
+        'view_mode': 'list,form',
+        'domain': [('doctor_id', '=', self.id)],
+        'context': {
+            'default_doctor_id': self.id,
+        },
+    }
