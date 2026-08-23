@@ -10,16 +10,16 @@ class HospitalDoctor(models.Model):
         required=True
     )
 
-    email = fields.Char(
-        string='Email'
+    specialization = fields.Char(
+        string='Specialization'
     )
 
     phone = fields.Char(
         string='Phone'
     )
 
-    specialization = fields.Char(
-        string='Specialization'
+    email = fields.Char(
+        string='Email'
     )
 
     license_number = fields.Char(
@@ -27,7 +27,7 @@ class HospitalDoctor(models.Model):
     )
 
     experience = fields.Integer(
-        string='Years of Experience'
+        string='Experience'
     )
 
     gender = fields.Selection(
@@ -44,11 +44,17 @@ class HospitalDoctor(models.Model):
     )
 
     is_available = fields.Boolean(
-        string='Available for Appointments',
+        string='Available',
         default=True
     )
 
     active = fields.Boolean(
         string='Active',
         default=True
+    )
+
+    appointment_ids = fields.One2many(
+        'hospital.appointment',
+        'doctor_id',
+        string='Appointments'
     )
