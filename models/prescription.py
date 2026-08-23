@@ -35,6 +35,7 @@ class HospitalPrescription(models.Model):
             ('draft', 'Draft'),
             ('confirmed', 'Confirmed'),
             ('completed', 'Completed'),
+            ('cancelled', 'Cancelled'),
         ],
         string='Status',
         default='draft',
@@ -48,6 +49,10 @@ class HospitalPrescription(models.Model):
     def action_complete(self):
         for record in self:
             record.state = 'completed'
+
+    def action_cancel(self):
+        for record in self:
+            record.state = 'cancelled'
 
     def action_reset_to_draft(self):
         for record in self:

@@ -29,32 +29,39 @@
 
                 <header>
 
-                    <button
-                        name="action_confirm"
-                        string="Confirm"
-                        type="object"
-                        class="btn-primary"
-                        invisible="state != 'draft'"/>
+    <button
+        name="action_confirm"
+        string="Confirm"
+        type="object"
+        class="btn-primary"
+        invisible="state != 'draft'"/>
 
-                    <button
-                        name="action_complete"
-                        string="Complete"
-                        type="object"
-                        class="btn-primary"
-                        invisible="state != 'confirmed'"/>
+    <button
+        name="action_complete"
+        string="Complete"
+        type="object"
+        class="btn-primary"
+        invisible="state != 'confirmed'"/>
 
-                    <button
-                        name="action_reset_to_draft"
-                        string="Reset to Draft"
-                        type="object"
-                        invisible="state == 'draft'"/>
+    <button
+        name="action_cancel"
+        string="Cancel"
+        type="object"
+        class="btn-secondary"
+        invisible="state in ('completed', 'cancelled')"/>
 
-                    <field
-                        name="state"
-                        widget="statusbar"
-                        statusbar_visible="draft,confirmed,completed"/>
+    <button
+        name="action_reset_to_draft"
+        string="Reset to Draft"
+        type="object"
+        invisible="state == 'draft'"/>
 
-                </header>
+    <field
+        name="state"
+        widget="statusbar"
+        statusbar_visible="draft,confirmed,completed,cancelled"/>
+
+</header>
 
                 <sheet>
 
