@@ -24,3 +24,28 @@ class HospitalDepartment(models.Model):
         string='Active',
         default=True
     )
+
+    state = fields.Selection(
+        [
+            ('draft', 'Draft'),
+            ('active', 'Active'),
+            ('inactive', 'Inactive'),
+        ],
+        string='Status',
+        default='draft',
+        required=True
+    )
+
+    def action_activate(self):
+        for record in self:
+            record.state = 'active'
+            record.active = True
+
+    def action_deactivate(self):
+        for record in self:
+            record.state = 'inactive'
+            record.active = False
+
+    def action_reset_to_draft(self):
+        for record in self:
+            record.state = 'draft'
