@@ -1,9 +1,13 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class HospitalPatient(models.Model):
     _name = 'hospital.patient'
     _description = 'Hospital Patient'
+
+    # =========================================================
+    # Basic Patient Information
+    # =========================================================
 
     name = fields.Char(
         string='Patient Name',
@@ -18,8 +22,18 @@ class HospitalPatient(models.Model):
         string='Phone'
     )
 
+    # =========================================================
+    # Personal Information
+    # =========================================================
+
+    date_of_birth = fields.Date(
+        string='Date of Birth'
+    )
+
     age = fields.Integer(
-        string='Age'
+        string='Age',
+        compute='_compute_age',
+        store=True
     )
 
     gender = fields.Selection(
@@ -29,10 +43,6 @@ class HospitalPatient(models.Model):
             ('other', 'Other'),
         ],
         string='Gender'
-    )
-
-    date_of_birth = fields.Date(
-        string='Date of Birth'
     )
 
     blood_group = fields.Selection(
@@ -49,8 +59,13 @@ class HospitalPatient(models.Model):
         string='Blood Group'
     )
 
+    # =========================================================
+    # Patient Status
+    # =========================================================
+
     is_emergency = fields.Boolean(
-        string='Emergency Patient'
+        string='Emergency Patient',
+        default=False
     )
 
     active = fields.Boolean(
@@ -58,21 +73,61 @@ class HospitalPatient(models.Model):
         default=True
     )
 
+    # =========================================================
+    # Patient → Appointment Relationship
+    # =========================================================
+
     appointment_ids = fields.One2many(
         'hospital.appointment',
         'patient_id',
         string='Appointments'
     )
+
+    # =========================================================
+    # Compute Age
+    # =========================================================
+
+    @api.depends('date_of_birth')
+    def _compute_age(self):
+
+        today = fields.Date.today()
+
+        for record in self:
+
+            if record.date_of_birth:
+
+                record.age = (
+                    today.year
+                    - record.date_of_birth.year
+                    - (
+                        (today.month, today.day)
+                        <
+                        (
+                            record.date_of_birth.month,
+                            record.date_of_birth.day
+                        )
+                    )
+                )
+
+            else:
+                record.age = 0
+
+    # =========================================================
+    # Smart Button → Appointments
+    # =========================================================
+
     def action_view_appointments(self):
         self.ensure_one()
 
         return {
-        'type': 'ir.actions.act_window',
-        'name': 'Appointments',
-        'res_model': 'hospital.appointment',
-        'view_mode': 'list,form',
-        'domain': [('patient_id', '=', self.id)],
-        'context': {
-            'default_patient_id': self.id,
-        },
-    }
+            'type': 'ir.actions.act_window',
+            'name': 'Appointments',
+            'res_model': 'hospital.appointment',
+            'view_mode': 'list,form',
+            'domain': [
+                ('patient_id', '=', self.id)
+            ],
+            'context': {
+                'default_patient_id': self.id,
+            },
+        }
