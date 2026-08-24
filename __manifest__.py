@@ -4,15 +4,20 @@
     'category': 'Healthcare',
     'description': """
         Hospital Management System
-        Manage patients, doctors, appointments,
-        prescriptions and medical history.
+        Manage patients, doctors, departments,
+        appointments, prescriptions and medical history.
     """,
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+
         'views/patient_views.xml',
         'views/doctor_views.xml',
         'views/appointment_views.xml',
+        'views/department_views.xml',
+        'views/prescription_views.xml',
+        'views/history_views.xml',
+
     ],
     'installable': True,
     'application': True,
