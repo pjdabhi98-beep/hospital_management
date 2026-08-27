@@ -10,6 +10,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/department_views.xml',
         'views/prescription_views.xml',
         'views/history_views.xml',

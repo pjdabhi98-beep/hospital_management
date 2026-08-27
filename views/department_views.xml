@@ -12,6 +12,7 @@
                 <field name="name" width="250px"/>
                 <field name="code" width="150px"/>
                 <field name="active" width="100px"/>
+                <field name="state" width="100px"/>
             </list>
         </field>
     </record>
@@ -31,6 +32,7 @@
                             <field name="name"/>
                             <field name="code"/>
                             <field name="active"/>
+                            <field name="state"/>
                         </group>
 
                         <group>
