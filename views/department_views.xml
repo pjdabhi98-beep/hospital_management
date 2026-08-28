@@ -91,18 +91,11 @@
     </record>
 
 
-    <!-- Main Menu -->
-    <menuitem
-        id="menu_hospital_management"
-        name="Hospital Management"
-        sequence="10"/>
-
-
     <!-- Department Menu -->
     <menuitem
         id="menu_hospital_department"
         name="Departments"
-        parent="menu_hospital_management"
+        parent="menu_hospital_management_root"
         action="action_hospital_departments"
         sequence="10"/>
 

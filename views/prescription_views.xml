@@ -162,7 +162,7 @@
     <menuitem
         id="menu_hospital_prescription"
         name="Prescriptions"
-        parent="menu_hospital_management"
+        parent="menu_hospital_management_root"
         action="action_hospital_prescriptions"
         sequence="20"/>
 
