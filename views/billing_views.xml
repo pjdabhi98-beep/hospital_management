@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+     
+
+    <!-- Billing List View -->
+
+    <record id="view_hospital_billing_list" model="ir.ui.view">
+
+        <field name="name">hospital.billing.list</field>
+
+        <field name="model">hospital.billing</field>
+
+        <field name="arch" type="xml">
+
+            <list string="Hospital Billing">
+
+                <field name="name"/>
+
+                <field name="patient_id"/>
+
+                <field name="billing_date"/>
+
+                <field name="amount"/>
+
+                <field name="payment_method"/>
+
+                <field name="state"/>
+
+            </list>
+
+        </field>
+
+    </record>
+
+
+    <!-- Billing Form View -->
+
+    <record id="view_hospital_billing_form" model="ir.ui.view">
+
+        <field name="name">hospital.billing.form</field>
+
+        <field name="model">hospital.billing</field>
+
+        <field name="arch" type="xml">
+
+            <form string="Hospital Billing">
+
+                <header>
+
+                    <button
+                        name="action_confirm"
+                        string="Mark as Paid"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'draft'"
+                    />
+
+                    <button
+                        name="action_cancel"
+                        string="Cancel"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="state != 'draft'"
+                    />
+
+                    <button
+                        name="action_reset_to_draft"
+                        string="Reset to Draft"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="state == 'draft'"
+                    />
+
+                    <field name="state" widget="statusbar"/>
+
+                </header>
+
+                <sheet>
+
+                    <group>
+
+                        <group>
+
+                            <field name="name"/>
+
+                            <field name="patient_id"/>
+
+                            <field name="billing_date"/>
+
+                        </group>
+
+                        <group>
+
+                            <field name="amount"/>
+
+                            <field name="payment_method"/>
+
+                            <field name="state" invisible="1"/>
+
+                        </group>
+
+                    </group>
+
+                    <group>
+
+                        <field name="description"/>
+
+                    </group>
+
+                </sheet>
+
+            </form>
+
+        </field>
+
+    </record>
+
+      <record id="view_hospital_billing_search" model="ir.ui.view">
+
+        <field name="name">hospital.billing.search</field>
+
+        <field name="model">hospital.billing</field>
+
+        <field name="arch" type="xml">
+
+            <search string="Search Billing">
+
+                <!-- Search Fields -->
+
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="payment_method"/>
+                <field name="state"/>
+
+
+                <!-- Filters -->
+
+                <filter
+                    name="filter_draft"
+                    string="Draft"
+                    domain="[('state', '=', 'draft')]"
+                />
+
+                <filter
+                    name="filter_paid"
+                    string="Paid"
+                    domain="[('state', '=', 'paid')]"
+                />
+
+                <filter
+                    name="filter_cancelled"
+                    string="Cancelled"
+                    domain="[('state', '=', 'cancelled')]"
+                />
+
+                <separator/>
+
+                <filter
+                    name="filter_today"
+                    string="Today"
+                    domain="[('billing_date', '=', context_today())]"
+                />
+
+
+                <!-- Group By -->
+
+                <group>
+
+                    <filter
+                        name="group_by_patient"
+                        string="Patient"
+                        context="{'group_by': 'patient_id'}"
+                    />
+
+                    <filter
+                        name="group_by_payment_method"
+                        string="Payment Method"
+                        context="{'group_by': 'payment_method'}"
+                    />
+
+                    <filter
+                        name="group_by_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"
+                    />
+
+                    <filter
+                        name="group_by_billing_date"
+                        string="Billing Date"
+                        context="{'group_by': 'billing_date'}"
+                    />
+
+                </group>
+
+            </search>
+
+        </field>
+
+    </record>
+
+
+
+    <!-- Billing Action -->
+
+    <record id="action_hospital_billing" model="ir.actions.act_window">
+
+        <field name="name">Billing</field>
+
+        <field name="res_model">hospital.billing</field>
+
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+
+    <!-- Billing Menu -->
+
+    <menuitem
+        id="menu_hospital_billing"
+        name="Billing"
+        action="action_hospital_billing"
+        parent="menu_hospital_management_root"
+        sequence="40"
+    />
+
+</odoo>

@@ -46,6 +46,11 @@ class HospitalPrescription(models.Model):
         default='draft',
         required=True
     )
+    consultation_id = fields.Many2one(
+        'hospital.consultation',
+        string='Consultation',
+        ondelete='set null'
+    )
 
     @api.model_create_multi
     def create(self, vals_list):

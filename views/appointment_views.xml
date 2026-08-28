@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <!-- ========================================================= -->
+    <!-- Appointment List View -->
+    <!-- ========================================================= -->
+
+    <record id="view_hospital_appointment_list" model="ir.ui.view">
+
+        <field name="name">hospital.appointment.list</field>
+        <field name="model">hospital.appointment</field>
+
+        <field name="arch" type="xml">
+
+            <list string="Appointments">
+
+                <field name="patient_id"
+                       string="Patient"
+                       width="180"/>
+
+                <field name="doctor_id"
+                       string="Doctor"
+                       width="180"/>
+
+                <field name="appointment_date"
+                       string="Appointment Date"
+                       width="180"/>
+
+                <field name="reason"
+                       string="Reason"
+                       width="250"/>
+
+                <field name="status"
+                       string="Status"
+                       width="120"/>
+
+                <field name="active"
+                       string="Active"
+                       width="90"/>
+
+            </list>
+
+        </field>
+    </record>
+
+
+    <!-- ========================================================= -->
+    <!-- Appointment Form View -->
+    <!-- ========================================================= -->
+
+    <record id="view_hospital_appointment_form" model="ir.ui.view">
+
+        <field name="name">hospital.appointment.form</field>
+        <field name="model">hospital.appointment</field>
+
+        <field name="arch" type="xml">
+
+            <form string="Appointment">
+
+    <header>
+
+        <!-- Confirm -->
+        <button
+            name="action_confirm"
+            string="Confirm"
+            type="object"
+            class="btn-primary"
+            invisible="status != 'scheduled'"
+        />
+
+        <!-- Complete -->
+        <button
+            name="action_complete"
+            string="Complete"
+            type="object"
+            class="btn-primary"
+            invisible="status != 'confirmed'"
+        />
+
+        <!-- Cancel -->
+        <button
+            name="action_cancel"
+            string="Cancel"
+            type="object"
+            class="btn-secondary"
+            invisible="status == 'completed' or status == 'cancelled'"
+        />
+
+        <!-- Reset -->
+        <button
+            name="action_reset_to_scheduled"
+            string="Reset to Scheduled"
+            type="object"
+            class="btn-secondary"
+            invisible="status != 'cancelled'"
+        />
+
+        <!-- Statusbar -->
+        <field
+            name="status"
+            widget="statusbar"
+            statusbar_visible="scheduled,confirmed,completed,cancelled"
+        />
+
+    </header>
+
+    <sheet>
+
+        <group string="Appointment Information">
+
+            <group>
+
+                <field name="patient_id"/>
+
+                <field name="doctor_id"/>
+
+                <field name="appointment_date"/>
+
+            </group>
+
+            <group>
+
+                <field name="active"/>
+
+            </group>
+
+        </group>
+
+
+        <group string="Visit Details">
+
+            <field
+                name="reason"
+                placeholder="Enter reason for visit..."
+            />
+
+            <field
+                name="notes"
+                placeholder="Enter additional notes..."
+            />
+
+        </group>
+
+    </sheet>
+
+</form>
+
+        </field>
+    </record>
+
+
+    <!-- ========================================================= -->
+    <!-- Appointment Search View -->
+    <!-- ========================================================= -->
+
+    <record id="view_hospital_appointment_search"
+            model="ir.ui.view">
+
+        <field name="name">hospital.appointment.search</field>
+        <field name="model">hospital.appointment</field>
+
+        <field name="arch" type="xml">
+
+            <search string="Search Appointments">
+
+                <!-- Search Fields -->
+
+                <field name="patient_id"
+                       string="Patient"/>
+
+                <field name="doctor_id"
+                       string="Doctor"/>
+
+                <field name="appointment_date"
+                       string="Appointment Date"/>
+
+                <field name="status"
+                       string="Status"/>
+
+
+                <!-- Status Filters -->
+
+                <filter
+                    name="scheduled"
+                    string="Scheduled"
+                    domain="[('status', '=', 'scheduled')]"
+                />
+
+                <filter
+                    name="confirmed"
+                    string="Confirmed"
+                    domain="[('status', '=', 'confirmed')]"
+                />
+
+                <filter
+                    name="completed"
+                    string="Completed"
+                    domain="[('status', '=', 'completed')]"
+                />
+
+                <filter
+                    name="cancelled"
+                    string="Cancelled"
+                    domain="[('status', '=', 'cancelled')]"
+                />
+
+
+                <!-- Active Filter -->
+
+                <filter
+                    name="active"
+                    string="Active"
+                    domain="[('active', '=', True)]"
+                />
+
+                <filter
+                    name="inactive"
+                    string="Inactive"
+                    domain="[('active', '=', False)]"
+                />
+
+
+                <!-- Group By -->
+
+                <group>
+
+                    <filter
+                        name="group_patient"
+                        string="Patient"
+                        context="{'group_by': 'patient_id'}"
+                    />
+
+                    <filter
+                        name="group_doctor"
+                        string="Doctor"
+                        context="{'group_by': 'doctor_id'}"
+                    />
+
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'status'}"
+                    />
+
+                    <filter
+                        name="group_date"
+                        string="Appointment Date"
+                        context="{'group_by': 'appointment_date'}"
+                    />
+
+                </group>
+
+            </search>
+
+        </field>
+    </record>
+
+
+    <!-- ========================================================= -->
+    <!-- Appointment Window Action -->
+    <!-- ========================================================= -->
+
+    <record id="action_hospital_appointment"
+            model="ir.actions.act_window">
+
+        <field name="name">Appointments</field>
+
+        <field name="res_model">hospital.appointment</field>
+
+        <field name="view_mode">list,form</field>
+
+        <field name="search_view_id"
+               ref="view_hospital_appointment_search"/>
+
+    </record>
+
+
+    <!-- ========================================================= -->
+    <!-- Appointment Menu -->
+    <!-- ========================================================= -->
+
+    <menuitem
+        id="menu_hospital_appointment"
+        name="Appointments"
+        parent="menu_hospital_management_root"
+        action="action_hospital_appointment"
+        sequence="30"
+    />
+
+</odoo>

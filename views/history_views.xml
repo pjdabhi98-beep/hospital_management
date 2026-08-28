@@ -121,7 +121,7 @@
     <menuitem
         id="menu_hospital_medical_history"
         name="Medical History"
-        parent="menu_hospital_management"
+        parent="menu_hospital_management_root"
         action="action_hospital_medical_history"
         sequence="30"/>
 

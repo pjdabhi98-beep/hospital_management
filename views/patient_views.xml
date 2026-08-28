@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <!-- ========================================================= -->
+    <!-- Patient List View -->
+    <!-- ========================================================= -->
+
+    <record id="view_hospital_patient_list" model="ir.ui.view">
+        <field name="name">hospital.patient.list</field>
+        <field name="model">hospital.patient</field>
+
+        <field name="arch" type="xml">
+            <list string="Patients">
+
+                <field name="name"
+                       string="Patient Name"
+                       width="180"/>
+
+                <field name="phone"
+                       string="Phone"
+                       width="130"/>
+
+                <field name="email"
+                       string="Email"
+                       width="220"/>
+
+                <field name="age"
+                       string="Age"
+                       width="70"/>
+
+                <field name="gender"
+                       string="Gender"
+                       width="100"/>
+
+                <field name="date_of_birth"
+                       string="Date of Birth"
+                       width="130"/>
+
+                <field name="blood_group"
+                       string="Blood Group"
+                       width="110"/>
+
+                <field name="is_emergency"
+                       string="Emergency"
+                       width="110"/>
+
+                <field name="active"
+                       string="Active"
+                       width="90"/>
+
+            </list>
+        </field>
+    </record>
+
+
+    <!-- ========================================================= -->
+    <!-- Patient Form View -->
+    <!-- ========================================================= -->
+
+    <record id="view_hospital_patient_form" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+
+        <field name="arch" type="xml">
+
+            <form string="Patient">
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+    <button
+        name="action_view_appointments"
+        type="object"
+        class="oe_stat_button"
+        icon="fa-calendar"
+    >
+
+        <field
+            name="appointment_ids"
+            widget="statinfo"
+            string="Appointments"
+        />
+
+    </button>
+
+</div>
+
+                    <!-- Patient Information -->
+                    <group string="Patient Information">
+
+                        <group>
+
+                            <field name="name"/>
+
+                            <field name="date_of_birth"/>
+
+                            <field name="age" readonly="1"/>
+
+                            <field name="gender"/>
+
+                            <field name="blood_group"/>
+
+                        </group>
+
+                        <group>
+
+                            <field name="phone"/>
+
+                            <field name="email"/>
+
+                            <field name="is_emergency"/>
+
+                            <field name="active"/>
+
+                        </group>
+
+                    </group>
+                    <notebook>
+
+    <page string="Appointments">
+
+        <field name="appointment_ids">
+
+            <list>
+
+                <field name="doctor_id"
+                       string="Doctor"
+                       width="180"/>
+
+                <field name="appointment_date"
+                       string="Appointment Date"
+                       width="180"/>
+
+                <field name="reason"
+                       string="Reason"
+                       width="250"/>
+
+                <field name="status"
+                       string="Status"
+                       width="120"/>
+
+            </list>
+
+        </field>
+
+    </page>
+
+</notebook>
+
+                </sheet>
+                
+
+            </form>
+
+        </field>
+    </record>
+
+
+    <!-- ========================================================= -->
+    <!-- Patient Search View -->
+    <!-- ========================================================= -->
+
+    <record id="view_hospital_patient_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hospital.patient</field>
+
+        <field name="arch" type="xml">
+
+            <search string="Search Patients">
+
+                <!-- Search Fields -->
+
+                <field name="name"
+                       string="Patient Name"/>
+
+                <field name="phone"
+                       string="Phone"/>
+
+                <field name="email"
+                       string="Email"/>
+
+                <field name="blood_group"
+                       string="Blood Group"/>
+
+
+                <!-- Filters -->
+
+                <filter
+                    name="emergency"
+                    string="Emergency"
+                    domain="[('is_emergency', '=', True)]"
+                />
+
+                <filter
+                    name="active"
+                    string="Active"
+                    domain="[('active', '=', True)]"
+                />
+
+                <filter
+                    name="inactive"
+                    string="Inactive"
+                    domain="[('active', '=', False)]"
+                />
+
+
+                <!-- Group By -->
+
+                <group>
+
+                    <filter
+                        name="group_gender"
+                        string="Gender"
+                        context="{'group_by': 'gender'}"
+                    />
+
+                    <filter
+                        name="group_blood_group"
+                        string="Blood Group"
+                        context="{'group_by': 'blood_group'}"
+                    />
+
+                </group>
+
+            </search>
+
+        </field>
+    </record>
+
+
+    <!-- Patient Window Action -->
+<record id="action_hospital_patient" model="ir.actions.act_window">
+
+    <field name="name">Patients</field>
+    <field name="res_model">hospital.patient</field>
+    <field name="view_mode">list,form</field>
+
+    <field name="search_view_id"
+           ref="view_hospital_patient_search"/>
+
+</record>
+
+    <!-- ========================================================= -->
+    <!-- Main Hospital Management Menu -->
+    <!-- ========================================================= -->
+
+    <menuitem
+        id="menu_hospital_management_root"
+        name="Hospital Management"
+        sequence="10"
+    />
+
+
+    <!-- ========================================================= -->
+    <!-- Patient Menu -->
+    <!-- ========================================================= -->
+
+    <menuitem
+        id="menu_hospital_patient"
+        name="Patients"
+        parent="menu_hospital_management_root"
+        action="action_hospital_patient"
+        sequence="10"
+    />
+
+</odoo>
