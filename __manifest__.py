@@ -18,6 +18,7 @@
         'views/prescription_views.xml',
         'views/history_views.xml',
         'views/billing_views.xml',
+        'views/consultation_views.xml',
 
     ],
     'installable': True,
